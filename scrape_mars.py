@@ -7,6 +7,7 @@ from flask import Flask, render_template, redirect
 from flask_pymongo import PyMongo
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
+import time
 
 def scrape():
     executable_path = {'executable_path': ChromeDriverManager().install()}
@@ -17,17 +18,18 @@ def scrape():
     # URL of page to be scraped
     url = 'https://redplanetscience.com'
     browser.visit(url)
+    time.sleep(3)
     html = browser.html
     soup = bs(html,'html.parser')
 
     # Retrieve the latest news title
     news_title=soup.find_all('div', class_='content_title')[0].text
     # Retrieve the latest news paragraph
-    news_p=soup.find_all('div', class_='rollover_description_inner')[0].text
+    news_p=soup.find_all('div', class_='article_teaser_body')[0].text
     
     ### JPL Mars Space Images - Featured Image
 
-    featured_image_url = "https://www.jpl.nasa.gov"
+    base_url = "https://www.jpl.nasa.gov"
     featured_image_url = "https://spaceimages-mars.com/"
     browser.visit(featured_image_url)
 
@@ -36,14 +38,10 @@ def scrape():
     # Parse HTML
     soup = bs(html,"html.parser")
     # Retrieve image url
-    image_url = soup.find_all('article')
-
-    image_url = soup.find('article')['style']
-    image_url = image_url.split("'")[1]
-
-    featured_image_url = featured_image_url+image_url
+   
     
-    
+    relative_image_path = soup.find_all('img')[3]["src"]
+    featured_image_url = featured_image_url + relative_image_path
 
     ### Mars Fact
 
@@ -62,8 +60,8 @@ def scrape():
     ### Mars Hemispheres
 
     # Scrape Mars hemisphere title and image
-    usgs_url='https://astrogeology.usgs.gov'
-    url='/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    base_url='https://astrogeology.usgs.gov'
+    url= base_url + '/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(url)
     html=browser.html
     soup=bs(html,'html.parser')
