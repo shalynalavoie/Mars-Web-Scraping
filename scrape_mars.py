@@ -61,43 +61,47 @@ def scrape():
 
     # Scrape Mars hemisphere title and image
     base_url='https://astrogeology.usgs.gov'
-    url= base_url + '/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    url= base_url +'/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
     browser.visit(url)
     html=browser.html
     soup=bs(html,'html.parser')
 
     # Extract hemispheres item elements
-    mars_hems=soup.find('div',class_='collapsible results')
-    mars_item=mars_hems.find_all('div',class_='item')
-    hemisphere_image_urls=[]
+    items = soup.find_all('div', class_='item')
+    urls = []
+    titles = []
+    for item in items:
+       urls.append(base_url + item.find('a')['href'])
+       titles.append(item.find('h3').text.strip())
+     
+    browser.visit(urls[0])
+    html = browser.html
+    soup = bs(html, 'html.parser')
+    oneurl = base_url+soup.find('img',class_='wide-image')['src']
+    oneurl
 
-    # Loop through each hemisphere item
-    for item in mars_item:
-        # Error handling
-        try:
-            # Extract title
-            hem=item.find('div',class_='description')
-            title=hem.h3.text
-            # Extract image url
-            hem_url=hem.a['href']
-            browser.visit(usgs_url+hem_url)
-            html=browser.html
-            soup=bs(html,'html.parser')
-            image_src=soup.find('li').a['href']
-            if (title and image_src):
-                # Print results
-                print('-'*50)
-                print(title)
-                print(image_src)
-            # Create dictionary for title and url
-            hem_dict={
-                'title':title,
-                'image_url':image_src
-            }
-            hemisphere_image_urls.append(hem_dict)
-        except Exception as e:
-            print(e)
+    img_urls = []
+    for oneurl in urls:
+      browser.visit(oneurl)
+      html = browser.html
+      soup = bs(html, 'html.parser')
+#     savetofile(textfilename,soup.prettify())
+      oneurl = base_url+soup.find('img',class_='wide-image')['src']
+      img_urls.append(oneurl)
+    
+    img_urls
+            
+    hemisphere_image_urls = []
 
+    for i in range(len(titles)):
+     hemisphere_image_urls.append({'title':titles[i],'img_url':img_urls[i]})
+
+     hemisphere_image_urls
+    
+    for i in range(len(hemisphere_image_urls)):
+     print(hemisphere_image_urls[i]['title'])
+    print(hemisphere_image_urls[i]['img_url'] + '\n')
+    
     # Create dictionary for all info scraped from sources above
     mars_dict={
         "news_title":news_title,
