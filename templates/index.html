@@ -24,6 +24,7 @@
     <div class="row">
       <div class="col-md-12">
         <h2><u>Latest Mars News</u></h2>
+        {{ space.news_p}}
       </div>
     </div>
   </br>
@@ -33,31 +34,31 @@
         <p>{{ news_p }}</p>
         <div class="col-sm-7" id="featured-img">
           <h3>Featured Mars Image</h3>
-          <img src={{space.featured_img_url}} alt="Featured Mars Image" id="featuredImage">
+          <img src="{{space['featured_image_url']}}" alt="Featured Mars Image" id="featuredImage">
       </div>
       <div class="col-sm-5">
           <h3>Mars Facts</h3>
-          {{ space.fact_html_table | safe}} 
+          {{ space.fact_table | safe}} 
       </div>
   </div>
   <div class="container">
       <h2 id="hemis-title" style="text-align: center">Mars Hemispheres</h2>
       <div class="row">
           <div class="col-md-3 border">
-              <img src={{ space.hemisphere_image_urls[0][ 'img_urls' ]}} alt="Hemisphere 1" style="border: 0; width: 250px;">
-              <h3>{{hemisphere_image_urls[0]['title']}}</h3>
+              <img src="{{space['hemisphere_images'][0]['img_url']}}" alt="Hemisphere 1" style="border: 0; width: 250px;">
+              <h3>{{space['hemisphere_images'][0]['title']}}</h3>
           </div>
           <div class="col-md-3 border">
-              <img src={{ space.hemisphere_image_urls[1][ 'img_urls'] }} alt="Hemisphere 1" style="border: 0; width: 250px;">
-              <h3>{{hemisphere_image_urls[1]['title']}}</h3>
+              <img src="{{space['hemisphere_images'][1]['img_url']}}" alt="Hemisphere 2" style="border: 0; width: 250px;">
+              <h3>{{space['hemisphere_images'][1]['title']}}</h3>
           </div>
           <div class="col-md-3 border">
-              <img src={{ space.hemisphere_image_urls[2][ 'img_urls' ]}} alt="Hemisphere 1" style="border: 0; width: 250px;">
-              <h3>{{hemisphere_image_urls[2]['title']}}</h3>
+              <img src="{{space['hemisphere_images'][2]['img_url']}}" alt="Hemisphere 3" style="border: 0; width: 250px;">
+              <h3>{{space['hemisphere_images'][2]['title']}}</h3>
           </div>
           <div class="col-md-3 border">
-              <img src={{ space.hemisphere_image_urls[3][ 'img_urls' ]}} alt="Hemisphere 1" style="border: 0; width: 250px;">
-              <h3>{{hemisphere_image_urls[3]['title']}}</h3>
+              <img src="{{space['hemisphere_images'][3]['img_url']}}" alt="Hemisphere 4" style="border: 0; width: 250px;">
+              <h3>{{space['hemisphere_images'][3]['title']}}</h3>
           </div>
       </div>
   </div>

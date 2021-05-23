@@ -1,4 +1,5 @@
 # Dependencies
+from os import name
 from bs4 import BeautifulSoup as bs
 import requests
 import pymongo
@@ -114,3 +115,6 @@ def scrape():
     browser.quit()
     return mars_dict
 
+if __name__ == "__main__":
+    md = scrape()
+    print(md)
